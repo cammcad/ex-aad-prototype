@@ -7,7 +7,7 @@ defmodule InterlineClient.PageController do
     render conn, "index.html"
   end
 
-  @moduledoc """
+  @doc """
   Redirects browser to authenticate via Azure Active Directory (interlineWebApp). 
   """
   def aad(conn, _params) do
@@ -19,7 +19,7 @@ defmodule InterlineClient.PageController do
 	redirect conn, external: redirectUri
   end
 	
-  @moduledoc """
+  @doc """
   Callback handler for Azure Active Directory Authentication.
   Azure should be providing the generated authorization code 
   """
@@ -27,7 +27,7 @@ defmodule InterlineClient.PageController do
 	redeem_authorizationCode_for_access_token(conn,code)
   end
 
-  @moduledoc """
+  @doc """
   Sends an http request (POST - for an access token) to Azure Active Directory.
   This sends the generated authorization code back to Azure AD in exchange for 
   a generated temporary access token.
