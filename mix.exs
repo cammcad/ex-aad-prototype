@@ -16,11 +16,11 @@ defmodule InterlineClient.Mixfile do
   def application do
     [mod: {InterlineClient, []},
      applications: [:phoenix, :cowboy, :logger, :httpotion],
-		 env: [clientid: "client-id-here",
-					 clientsecret: "client-secret-here",
-					 redirectUri: "redirect-uri-here",
-					 azureAD_resource: "azure-active-directory-resource-here",
-					 accessToken_endpoint: "access-token-endpoint-here"]]
+	env: [clientid: "client-id-here",
+	clientsecret: "client-secret-here",
+	redirectUri: "redirect-uri-here",
+	azureAD_resource: "azure-active-directory-resource-here",
+	accessToken_endpoint: "access-token-endpoint-here"]]
   end
 
   # Specifies your project dependencies
@@ -31,9 +31,9 @@ defmodule InterlineClient.Mixfile do
      {:phoenix_ecto, "~> 0.1"},
      {:postgrex, ">= 0.0.0"},
      {:cowboy, "~> 1.0"},
-		 {:uuid, "~> 1.0"},
-		 {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.1.1"},
-		 {:exjsx, github: "talentdeficit/exjsx", tag: "v3.1.0"},
-		 {:httpotion, "~> 2.0.0"}]
+     {:uuid, "~> 1.0"},
+     {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.1.1"},
+     {:exjsx, github: "talentdeficit/exjsx", tag: "v3.1.0"},
+     {:httpotion, "~> 2.0.0"}]
   end
 end
