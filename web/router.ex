@@ -16,9 +16,9 @@ defmodule InterlineClient.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-		get "/aad", PageController, :aad
-		get "/aad/response", PageController, :aad_response
-		get "/hellointerline", PageController, :call_secure_api
+    get "/aad", PageController, :aad
+    get "/aad/response", PageController, :aad_response
+    get "/hellointerline", PageController, :call_secure_api
   end
 
 
