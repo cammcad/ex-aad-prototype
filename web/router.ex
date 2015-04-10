@@ -18,7 +18,6 @@ defmodule InterlineClient.Router do
     get "/", PageController, :index
     get "/aad", PageController, :aad
     get "/aad/response", PageController, :aad_response
-    get "/hellointerline", PageController, :call_secure_api
   end
 
 
