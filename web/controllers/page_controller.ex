@@ -7,7 +7,7 @@ defmodule InterlineClient.PageController do
     render conn, "index.html"
   end
 
-	@moduledoc """
+	@doc """ 
   Redirects browser to authenticate via Azure Active Directory (interlineWebApp). 
   """
 	def aad(conn, _params) do
@@ -19,7 +19,7 @@ defmodule InterlineClient.PageController do
 		redirect conn, external: redirectUri
 	end
 	
-	@moduledoc """
+	@doc """
   Callback handler for Azure Active Directory Authentication.
   Azure should be providing the generated authorization code 
   """
@@ -27,7 +27,7 @@ defmodule InterlineClient.PageController do
 		redeem_authorizationCode_for_access_token(conn,code)
 	end
 
-	@moduledoc """
+	@doc """
   Sends an http request (POST - for an access token) to Azure Active Directory.
   This sends the generated authorization code back to Azure AD in exchange for 
   a generated temporary access token.
@@ -42,10 +42,33 @@ defmodule InterlineClient.PageController do
 																				headers: ["content-type": "application/x-www-form-urlencoded"]]
 		IO.puts (HTTPotion.Response.success?(response)) # debug output
 		%HTTPotion.Response{body: body, headers: _, status_code: _statusCode} = response
-		access_token_params = JSX.decode body
-		{:ok,%{"access_token" => token, "expires_in" => _ein, "expires_on" => _eon, "id_token" => _id_token,
+		{:ok, access_token_params} = JSX.decode body
+		case Map.has_key?(access_token_params,"access_token") do
+			true ->
+				%{"access_token" => token, "expires_in" => _ein, "expires_on" => _eon, "id_token" => _id_token,
 					 "not_before" => _nb, "pwd_exp" => _pwd_exp, "pwd_url" => _pwd_url, "refresh_token" => _refresh_token,
-					 "resource" => _res, "scope" => _scope, "token_type" => token_type}} = access_token_params
-		send_resp(conn,200,"access_token:#{token}, token_type:#{token_type}")
+					 "resource" => _res, "scope" => _scope, "token_type" => token_type} = access_token_params
+				conn
+				|> put_session(:token,token)
+				|> put_session(:token_type,token_type)
+				#|> send_resp(200,"access_token:#{token}, token_type:#{token_type}")
+				|> call_secure_api
+			  #send_resp(conn,200,"access_token:#{token}, token_type:#{token_type}")
+		  false ->
+				IO.inspect access_token_params #debug output
+				send_resp(conn,200,"There was a problem authenticating")
+		end
 	end
+
+	def call_secure_api(conn) do
+		# making sure to pass the authorization token recieved from the authentication process above
+		token_type = get_session(conn,:token_type)
+		token = get_session(conn,:token)
+		response = HTTPotion.get "http://localhost:4008/api",
+		[body: "", headers: ["authorization": "#{token_type <> " " <> token}"]]
+	  IO.inspect response
+		%HTTPotion.Response{body: body, headers: _, status_code: _statusCode} = response
+		send_resp(conn,200,body)
+	end
+	
 end
