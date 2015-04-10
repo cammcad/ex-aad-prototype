@@ -16,11 +16,11 @@ defmodule InterlineClient.Mixfile do
   def application do
     [mod: {InterlineClient, []},
      applications: [:phoenix, :cowboy, :logger, :httpotion],
-		 env: [clientid: "client-id-here",
-					 clientsecret: "client-secret-here",
-					 redirectUri: "redirect-uri-here",
-					 azureAD_resource: "azure-active-directory-resource-here",
-					 accessToken_endpoint: "access-token-endpoint-here"]]
+		 env: [clientid: "5f0f5118-45a5-40a2-be35-c59883eb12ca",
+					 clientsecret: "ENIuII0Xoqod4D1OvNqVV7HTRXf65KjJSs1yKNekBr0=",
+					 redirectUri: "http://localhost:4000/aad/response",
+					 azureAD_resource: "https://graph.windows.net",
+					 accessToken_endpoint: "https://login.windows.net/common/oauth2/token"]]
   end
 
   # Specifies your project dependencies
